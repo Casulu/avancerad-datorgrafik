@@ -13,15 +13,15 @@ public:
     Group(const std::string &name = "") : Node(name) {}
     void addChild(Node *n)
     {
-        m_children.push_back(std::shared_ptr(n));
+        m_children.push_back(n);
     }
     void accept(Visitor &v)
     {
         std::cerr << "Accept: " << getName() << std::endl;
         v.visit(*this);
     }
-    std::vector<std::shared_ptr<Node>> getChildren() { return m_children; }
+    std::vector<Node*> getChildren() { return m_children; }
 
 private:
-    std::vector<std::shared_ptr<Node>> m_children
+    std::vector<Node*> m_children;
 }
