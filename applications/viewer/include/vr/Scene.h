@@ -4,7 +4,7 @@
 #include <memory>
 #include <vector>
 #include <sstream>
-#include "RenderItem.h"
+#include "Node.h"
 #include "Light.h"
 #include "Camera.h"
 #include "vr/Shader.h"
@@ -12,99 +12,101 @@
 namespace vr
 {
 
-    class Scene;
+  class Scene;
+
+  /**
+  Class that holds all mesh objects, lights and a camera
+  */
+  class Scene
+  {
+  public:
 
     /**
-    Class that holds all mesh objects, lights and a camera
+    Constructor
     */
-    class Scene
-    {
-    public:
-        /**
-        Constructor
-        */
-        Scene();
+    Scene();
 
-        /**
-        Initialize the vertex and fragment shader and a program.
-        \param vshader_filename
-        \param fshader_filename
-        \return true if successful.
-        */
-        bool initShaders(const std::string &vshader_filename, const std::string &fshader_filename);
+    /**
+    Initialize the vertex and fragment shader and a program.
+    \param vshader_filename
+    \param fshader_filename
+    \return true if successful.
+    */
+    bool initShaders(const std::string& vshader_filename, const std::string& fshader_filename);
 
-        /**
-        Add a lightsource
-        \param light - A new light source<
-        */
-        void add(std::shared_ptr<Light> &light);
+    /**
+    Add a lightsource
+    \param light - A new light source<
+    */
+    void add(std::shared_ptr<Light>& light);
 
-        /**
-        Get all light sources
-        \return A vector of lightsources
-        */
-        const LightVector &getLights();
+    /**
+    Get all light sources
+    \return A vector of lightsources
+    */
+    const LightVector& getLights();
 
-        /**
-        Get the camera
-        \return The camera
-        */
-        std::shared_ptr<Camera> getCamera();
 
-        ~Scene();
+    /**
+    Get the camera
+    \return The camera
+    */
+    std::shared_ptr<Camera> getCamera();
 
-        /**
-        Apply the camera
-        */
-        void applyCamera();
+    ~Scene();
 
-        /**
-        Use the shader program
-        */
-        void useProgram();
+    /**
+    Apply the camera
+    */
+    void applyCamera();
 
-        /**
-        Add a new node
-        \param node - A new node
-        */
-        void add(std::shared_ptr<RenderItem> &node);
+    /**
+    Use the shader program
+    */
+    void useProgram();
 
-        /**
-        Reset all nodes transform to its initial value
-        */
-        void resetTransform();
+    /**
+    Add a new node
+    \param node - A new node
+    */
+    void add(std::shared_ptr<Node>& node);
 
-        /**
-        Get a all nodes
-        \return A vector containing all nodes
-        */
-        const RenderItemVector &getNodes();
+    /**
+    Reset all nodes transform to its initial value
+    */
+    void resetTransform();
 
-        /**
-        Get the i:th node
-        \param i - Index in vector<
-        \return A node
-        */
-        std::shared_ptr<RenderItem> getNode(size_t i);
+    /**
+    Get a all nodes
+    \return A vector containing all nodes
+    */
+    const NodeVector& getNodes();
 
-        /**
-        Compute a bounding box for the whole scene
-        \return A bounding box for the whole scene
-        */
-        BoundingBox calculateBoundingBox();
+    /**
+    Get the i:th node
+    \param i - Index in vector<
+    \return A node
+    */
+    std::shared_ptr<Node> getNode(size_t i);
 
-        /**
-        Render the whole scene
-        */
-        void render();
+    /**
+    Compute a bounding box for the whole scene
+    \return A bounding box for the whole scene
+    */
+    BoundingBox calculateBoundingBox();
 
-    private:
-        RenderItemVector m_nodes;
-        LightVector m_lights;
-        GLint m_uniform_numberOfLights;
+    /**
+    Render the whole scene
+    */
+    void render();
 
-        std::shared_ptr<vr::Shader> m_shader;
+  private:
+    NodeVector m_nodes;
+    LightVector m_lights;
+    GLint m_uniform_numberOfLights;
 
-        std::shared_ptr<Camera> m_camera;
-    };
+    std::shared_ptr<vr::Shader> m_shader;
+
+    std::shared_ptr<Camera> m_camera;
+  };
 }
